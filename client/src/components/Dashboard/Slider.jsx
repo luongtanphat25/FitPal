@@ -1,3 +1,4 @@
+
 import moment from 'moment';
 import { useRef, useEffect, useState, useContext } from 'react';
 import Slider from 'react-slick';
@@ -26,22 +27,46 @@ const MUSCLE_ICON = {
   triceps: 'fa-dumbbell',
 };
 
+
+const MUSCLE_ICON = {
+  abdominals: "fa-child-reaching",
+  abductors: "fa-drumstick-bite",
+  adductors: "fa-drumstick-bite",
+  biceps: "fa-dumbbell",
+  calves: "fa-drumstick-bite",
+  chest: "fa-child-reaching",
+  forearms: "fa-dumbbell",
+  glutes: "fa-dumbbell",
+  hamstrings: "fa-drumstick-bite",
+  lats: "fa-child-reaching",
+  lower_back: "fa-child-reaching",
+  middle_back: "fa-child-reaching",
+  neck: "fa-user-xmark",
+  quadriceps: 'fa-drumstick-bite',
+  traps: "fa-child-reaching",
+  triceps: "fa-dumbbell",
+};
+
 //each slider item from mock data - could be moved to a different component
+
 const SliderItem = ({ exercise, workoutHistory, sets }) => {
   console.log(workoutHistory);
   const navigate = useNavigate();
   const { userId } = useContext(userContext);
 
+
   const uniqueExerciseNames = [
     ...new Set(workoutHistory.map((workout) => workout.exercise_name)),
   ];
   // console.log("Unique Exercises from workout history", uniqueExerciseNames);
+
   const [uniqueExercises, setUniqueExercises] = useState(
     workoutHistory.filter((workout) => workout.exercise_name === exercise)
   );
   const [currentSets, setCurrentSets] = useState(
     sets.filter((set) => exercise === set.name)
   );
+
   useEffect(() => {
     setUniqueExercises(
       workoutHistory.filter(
@@ -50,21 +75,31 @@ const SliderItem = ({ exercise, workoutHistory, sets }) => {
     );
   }, [workoutHistory.length]);
 
+
   const isDone =
     uniqueExercises.filter((set) => exercise === set.exercise_name)
       .length >= sets.filter((set) => exercise === set.name).length;
 
   const navigateToSession = () => {
     console.log(currentSets[0]);
+
+  const exerciseIcon = "excercise-icon fa-solid " + MUSCLE_ICON[currentSets[0].muscle_group]; 
+
+  const navigateToSession = () => {
+    console.log(currentSets[0])
+
     const setReference = currentSets[0];
     const programId = setReference.program_id;
     const programUserId = setReference.user_id;
     const sessionId = setReference.session_id;
-    if (userId === programUserId) {
+
+    if(userId === programUserId){
+
       navigate(`/programs/${programId}/sessions/${sessionId}`);
     } else {
       navigate(`/programs/${programId}/sessions/${sessionId}/noedit`);
     }
+
   };
 
   return (
@@ -243,6 +278,7 @@ const SliderComponent = () => {
 
   return (
     <div>
+
       {!profile.program_id ? (
         <div className="bg-dark p-5">
           <h2 className="slider-title text-warning">
@@ -277,6 +313,7 @@ const SliderComponent = () => {
           </Slider>
         </div>
       )}
+
     </div>
   );
 };

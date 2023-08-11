@@ -31,11 +31,11 @@ router.get("/program/:program_id/day/:day_of_week", (req, res) => {
 // Route to handle the POST request to /programs
 router.post("/session/:id", async (req, res) => {
   try {
-    const { set, sessionId, exerciseName } = req.body;
+    const { set, sessionId, exerciseName, muscleGroup } = req.body;
 
     const insertToSetsString = `
-    INSERT INTO sets (session_id, reps, resistant, exercise_name) 
-    VALUES ($1, $2, $3, $4)
+    INSERT INTO sets (session_id, reps, resistant, exercise_name, muscle_group) 
+    VALUES ($1, $2, $3, $4, $5)
     RETURNING *;
     `;
 
@@ -45,6 +45,7 @@ router.post("/session/:id", async (req, res) => {
       set.reps,
       set.resistant,
       exerciseName,
+      muscleGroup
     ]);
 
     res.status(201).json(result.rows[0]);

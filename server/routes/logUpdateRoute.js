@@ -7,32 +7,22 @@ const router = express.Router();
 // Route to handle the PUT request to /log/:workoutId
 router.put("/:workoutId", async (req, res) => {
   try {
-    const {
-      exercise_name,
-      reps,
-      resistance,
-      user_id,
-      session_id,
-      exercise_id,
-    } = req.body;
+    const { reps, resistance, user_id } = req.body;
     const workoutId = req.params.workoutId; // Get the workout ID from the route parameter
 
     // Define the update query
     const queryString = `
       UPDATE log
-      SET exercise_name = $1, reps = $2, resistance = $3, user_id = $4, session_id = $5, exercise_id = $6
-      WHERE id = $7
+      SET reps = $1, resistance = $2, user_id = $3 
+      WHERE id = $4
       RETURNING *;
     `;
 
     // Execute the update query
     const result = await pool.query(queryString, [
-      exercise_name,
       reps,
       resistance,
       user_id,
-      session_id,
-      exercise_id,
       workoutId,
     ]);
 

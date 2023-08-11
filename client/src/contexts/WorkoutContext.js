@@ -6,14 +6,10 @@ import axios from "axios";
 import WorkoutHistory from "../components/Log/WorkoutHistory";
 import WorkoutForm from "../components/Log/WorkoutForm.jsx";
 
-
-
 const WorkoutContext = createContext();
 export const useWorkoutContext = () => {
   return useContext(WorkoutContext);
 };
-
-
 
 const MUSCLE = {
   abdominals: "Abdominals",
@@ -40,10 +36,8 @@ const API_URL = "https://api.api-ninjas.com/v1/exercises";
 
 // Provider component
 export function WorkoutProvider({ children }) {
-
-    // ----------------CONTEXT PROVIDERS-------------------------------------
-    const { userId } = useContext(userContext);
-
+  // ----------------CONTEXT PROVIDERS-------------------------------------
+  const { userId } = useContext(userContext);
 
   ////////////////////////////////STATES///////////////////////////////////////
   //  work out form
@@ -68,7 +62,7 @@ export function WorkoutProvider({ children }) {
         params: {
           date: currentDate, // Send the current date as a parameter for SQL
         },
-      }); 
+      });
       console.log("fetchworkouthistory:", response.data);
       setWorkoutHistory(response.data);
 
@@ -92,6 +86,7 @@ export function WorkoutProvider({ children }) {
   //Delete workout
   const handleDeleteWorkout = async (workoutId) => {
     try {
+      console.log("Delete id:", workoutId);
       await axios.delete(`/delete/log/${workoutId}`);
       // update workout history after deleting
       fetchWorkoutHistory();
@@ -104,15 +99,19 @@ export function WorkoutProvider({ children }) {
   // Post workout
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Selected Muscle Group:", selectedMuscleGroup);
+    console.log("Selected Exercise:", selectedExercise);
+
     try {
       const logData = {
-        exercise_name: selectedExercise,
+        exercise_name: selectedExercise.name,
         reps,
         resistance: weightLoad,
         user_id: userId, // replace with current user id prop
       };
 
       if (editingWorkout) {
+        console.log("Editing workout id in put", editingWorkout.id);
         // If edit mode, perform an update operation
         const response = await axios.put(
           `/update/log/${editingWorkout.id}`,
@@ -122,7 +121,7 @@ export function WorkoutProvider({ children }) {
       } else {
         // create operation
         const response = await axios.post("/log", logData);
-        console.log("Workout logged successfully:", response.data)
+        console.log("Workout logged successfully:", response.data);
       }
 
       // Clear form and editingWorkout state

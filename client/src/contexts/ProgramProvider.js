@@ -9,6 +9,7 @@ export default function ProgramProvider(props) {
   // Here is our Shared State Object
   const [userPrograms, setUserPrograms] = useState([]);
   const [nonUserPrograms, setNonUserPrograms] = useState([]);
+  const [allSearchablePrograms, setAllSearchablePrograms] = useState([]);
   const [allPrograms, setAllPrograms] = useState([]);
   const [newProgram, setNewProgram] = useState({
     name: "",
@@ -24,10 +25,27 @@ export default function ProgramProvider(props) {
       // Get program data and update appropriate lists
       axios.get(`http://localhost:8080/programs`).then((res) => {
         setAllPrograms(res.data.program)
+        setAllSearchablePrograms(res.data.program)
         setUserPrograms(res.data.program.filter((program) => program.user_id === userId));
         setNonUserPrograms(res.data.program.filter((program) => program.user_id !== userId));
       });
   }, []);
+
+  const setNonUserProgramsByText = (checkString) => {
+    setNonUserPrograms(allPrograms.filter((program) => 
+      program.user_id !== userId &&
+      (program.name.toLowerCase().includes(checkString) || 
+      program.description.toLowerCase().includes(checkString))
+
+    ));
+  }
+
+  const setAllSearchableProgramsByText = (checkString) => {
+    setAllSearchablePrograms(allPrograms.filter((program) => 
+      (program.name.toLowerCase().includes(checkString) || 
+      program.description.toLowerCase().includes(checkString))
+    ));
+  }
 
   const deleteProgram = async (programId) => {
     try {
@@ -71,7 +89,18 @@ export default function ProgramProvider(props) {
 
 
   // This list can get long with a lot of functions.  Reducer may be a better choice
-  const providerData = { allPrograms, userPrograms, nonUserPrograms, deleteProgram, createProgram, setNewProgram, updateProgram };
+  const providerData = { 
+    allPrograms, 
+    allSearchablePrograms,
+    userPrograms, 
+    nonUserPrograms, 
+    deleteProgram, 
+    createProgram, 
+    setNewProgram, 
+    updateProgram,
+    setNonUserProgramsByText,
+    setAllSearchableProgramsByText
+   };
 
   // We can now use this as a component to wrap anything
   // that needs our state

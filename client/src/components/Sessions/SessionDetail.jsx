@@ -5,14 +5,17 @@ import SessionItem from '../Sessions/SessionItem';
 import ExerciseList from '../Exercises/ExerciseList';
 import ExerciseLog from '../Exercises/ExerciseLog';
 import AddExerciseModal from '../Exercises/AddExerciseModal';
+var moment = require('moment');
 
 const SessionDetail = (props) => {
   const [exercises, setExercises] = useState([]);
   const [title, setTitle] = useState('');
+  const [session, setCurrentSession] = useState(null);
   const [sets, setSets] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [editSet, setEditSet] = useState(false);
   const [selectedEx, setSelectedEx] = useState(null);
+  const [deleteMode, setDeleteMode] = useState(false);
   const [logs, setLogs] = useState([]);
   const user_id = window.sessionStorage.getItem('userId');
   const [displayLog, setDisplayLog] = useState(false);
@@ -23,11 +26,12 @@ const SessionDetail = (props) => {
   const fetchSessionData = async () => {
     const sessionResponse = await axios.get(`http://localhost:8080/sessions/${session_id}`);
     setTitle(sessionResponse.data.sessions[0].name);
+    setCurrentSession(sessionResponse.data.sessions[0]);
 
     const setsResponse = await axios.get(`http://localhost:8080/sets/${session_id}`);
     const exerciseList = setsResponse.data.sets.reduce((list, set) => {
       if (!list.some((exercise) => exercise.name === set.exercise_name)) {
-        list.push({ name: set.exercise_name });
+        list.push({ name: set.exercise_name, muscle: set.muscle_group });
       }
       return list;
     }, []);
@@ -90,21 +94,25 @@ const SessionDetail = (props) => {
   };
 
   const exercisesListItem = exercises.map((exercise, index) => {
-    const exerciseSets = sets.filter((set) => set.exercise_name === exercise.name).length;
+    
+    const exerciseSets = sets.filter((set) => set.exercise_name === exercise.name);
     const exerciseLogs = logs.filter(
       (log) =>
         log.exercise_name === exercise.name &&
-        new Date(log.timestamp).toLocaleDateString() === new Date().toLocaleDateString()
-    ).length;
+        (moment(log.timestamp).day() - 1) === session.day_of_week &&
+        moment(log.timestamp).isSame(new Date(), 'week')
+    );
     return (
       <SessionItem
         key={index}
-        sets={sets}
+        sets={exerciseSets}
         exercise={exercise}
         editable={props.editable}
         onClick={() => onEdit(exercise)}
         onRowSelected={() => onRowSelected(exercise)}
-        isDone={exerciseLogs >= exerciseSets}
+        isDone={exerciseLogs.length >= exerciseSets.length}
+        exerciseLogs={exerciseLogs}
+        
       />
     );
   });
@@ -135,25 +143,37 @@ const SessionDetail = (props) => {
             <div>
               <h1 className="display-5 pt-3 fw-bold text-white">{title}</h1>
               <div className="d-flex justify-content-between mb-5">
-                {props.editable && (
-                  <a
-                    className="btn btn-warning"
-                    href="#addExercise"
-                    onClick={onAddExerciseClick}
-                  >
-                    <i className="fa-solid fa-plus"></i> exercise
-                  </a>
-                )}
-                {props.editable && (
-                  <div className="d-flex">
-                    <button className="btn btn-dark" onClick={() => setEditMode(true)}>
-                      <i className="fa-regular fa-pen-to-square fa-xl text-light"></i>
-                    </button>
+                {props.editable && <a
+                  className="btn btn-warning"
+                  href="#addExercise"
+                  onClick={onAddExerciseClick}
+                >
+                  <i className="fa-solid fa-plus"></i> exercise
+                </a>}
+                {props.editable && <div className="d-flex">
+                  
+                  {deleteMode ?
+                  <div className="border border-danger rounded"> 
                     <button className="btn btn-dark" onClick={onDeleteSession}>
-                      <i className="fa-regular fa-trash-can fa-xl text-danger"></i>
+                      <i className="fa-solid fa-check fa-xl text-danger"></i>
+                    </button>
+                    <button className="btn btn-dark" onClick={() => setDeleteMode(false)}>
+                      <i className="fa-regular fa-x fa-xl text-white"></i>
                     </button>
                   </div>
-                )}
+                  :
+                  <div>
+                    <button
+                    className="btn btn-dark"
+                    onClick={() => setEditMode(true)}
+                  >
+                      <i className="fa-regular fa-pen-to-square fa-xl text-light"></i>
+                    </button>
+                    <button className="btn btn-dark" onClick={() => setDeleteMode(true)}>
+                      <i className="fa-regular fa-trash-can fa-xl text-danger"></i>
+                    </button>
+                  </div>}
+                </div>}
               </div>
             </div>
           )}
@@ -178,7 +198,7 @@ const SessionDetail = (props) => {
           </div>
         )}
       </div>
-      {editSet && <AddExerciseModal setModalDisplay={setEditSet} name={selectedEx?.name} />}
+      {editSet && <AddExerciseModal setModalDisplay={setEditSet} name={selectedEx?.name} muscle={selectedEx?.muscle}/>}
     </div>
   );
 };

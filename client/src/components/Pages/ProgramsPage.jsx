@@ -17,7 +17,7 @@ function ProgramsPage(props) {
     }
   }, []);
 
-  const {allPrograms, userPrograms, nonUserPrograms} = useContext(programContext);
+  const {allPrograms, allSearchablePrograms, userPrograms, nonUserPrograms} = useContext(programContext);
 
   useEffect(() => {
     const handleResize = () => {
@@ -69,7 +69,7 @@ function ProgramsPage(props) {
         </div>
         : 
         <CardList
-          cardData={allPrograms}
+          cardData={allSearchablePrograms}
           title="Programs"
           path={`/programs/`}
           editable={false}

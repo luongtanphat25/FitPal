@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
+import { LinearProgress } from '@mui/material';
 
 const SessionItem = (props) => {
   const [deleteMode, setDeleteMode] = useState();
@@ -20,6 +21,15 @@ const SessionItem = (props) => {
     window.location.reload();
   };
 
+  const getCompletionVal = () => {
+    if(props.exerciseLogs.length > props.sets.length) {
+      return 100;
+    } else {
+      return props.exerciseLogs.length / props.sets.length * 100
+    }
+    
+  }
+
   const setList = props.sets
     .filter((set) => set.exercise_name === props.exercise.name)
     .map((set) => (
@@ -28,22 +38,30 @@ const SessionItem = (props) => {
       </span>
     ));
 
+  const logList = props.exerciseLogs.map((exercise, index) =>
+      <span className="badge text-bg-warning" key={index}>
+        {exercise.resistance}lbs/{exercise.reps}
+      </span>
+    )
+
   return (
     <tr>
       {!deleteMode ? (
         <td
           role="button"
-          className="p-3 d-flex justify-content-between"
           onClick={props.onRowSelected}
         >
+          <div className="p-3 d-flex justify-content-between">
           <div>
             <div className="d-flex gap-3">
               <h6 className="text-warning">{props.exercise.name}</h6>
               {isCompleted && (
                 <i className="fa-solid fa-check text-success"></i>
               )}
+              
             </div>
             <div className="d-flex gap-2 flex-wrap">{setList}</div>
+            <div className="d-flex gap-2 flex-wrap pt-2">{logList}</div>
           </div>
           {/* {add edit - delete button} */}
           {props.editable && (
@@ -61,6 +79,11 @@ const SessionItem = (props) => {
               </div>
             </div>
           )}
+          </div>
+          <div className="w-100">
+            <LinearProgress color="success" variant="determinate" value={getCompletionVal()}sx={{ width: "100%"}}/>
+          </div>
+          
         </td>
       ) : (
         <td role="button" className="p-3 d-flex justify-content-between">
@@ -68,7 +91,7 @@ const SessionItem = (props) => {
             <h6 className="">Deleting {props.exercise.name}</h6>
           </div>
           {/* {add edit - delete button} */}
-          <div className="align-self-center">
+          <div className="align-self-center border border-danger rounded">
             <button className="btn" onClick={() => deleteItem()}>
               <i className="fa-solid fa-check fa-xl text-danger"></i>
             </button>

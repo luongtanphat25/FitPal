@@ -1,6 +1,6 @@
 import "./styles/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import Navbar from "./components/Navbar-Footer/Navbar";
 
 import Main from "./components/Pages/Main";

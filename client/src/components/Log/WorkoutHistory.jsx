@@ -16,17 +16,6 @@ const SliderItem = ({
   editingWorkout,
   handleEditWorkout,
 }) => {
-  // const [uniqueExerciseNames, setUniqueExerciseNames] = useState([]);
-
-  // useEffect(() => {
-  //   const exerciseList = [];
-  //   for(const workout of workoutHistory) {
-  //     if(!exerciseList.includes(workout.exercise_name)) {
-  //       exerciseList.push(workout.exercise_name)
-  //     }
-  //   }
-  //   setUniqueExerciseNames(exerciseList);
-  // }, [])
 
   return (
     <div
@@ -34,7 +23,7 @@ const SliderItem = ({
       className="pt-0 pb-0 m-0 border bg-dark border-secondary rounded flex-column border-3"
       style={{
         margin: "0 10px",
-        height: "293px",
+        height: "307px",
         overflow: "hidden",
         overflowX: "auto",
         overflowY: "scroll",
@@ -129,8 +118,9 @@ const WorkoutHistory = () => {
   }, [currentDate]);
 
   return (
-    <div className="workout-history-slider container addlog text-white rounded">
-      <h3 className="text-warning fw-bold pb-3 pt-5">Daily Workout History</h3>
+
+    <div className="workout-history-slider container addlog bg-dark text-white rounded">
+      <h3 className="text-warning fw-bold pb-1">Daily Workout History</h3>
 
       <Slider
         dots={true}

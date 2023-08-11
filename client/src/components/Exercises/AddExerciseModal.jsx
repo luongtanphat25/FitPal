@@ -10,8 +10,12 @@ const AddExerciseModal = (props) => {
 
   const [sets, setSets] = useState([]);
   const { session_id } = useParams();
-
   useEffect(() => {
+    console.log(props)
+  }, [])
+  
+  useEffect(() => {
+    
     const fetchSets = async () => {
       try {
         const res = await axios.get(`http://localhost:8080/sets/${session_id}/${props.name}`);
@@ -38,7 +42,7 @@ const AddExerciseModal = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     try {
       await axios.delete(`http://localhost:8080/sets/${session_id}/${props.name}`);
       for (const set of sets) {
@@ -46,6 +50,7 @@ const AddExerciseModal = (props) => {
           sessionId: session_id,
           set,
           exerciseName: props.name,
+          muscleGroup: props.muscle
         });
       }
       window.location.reload(true);

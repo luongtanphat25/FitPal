@@ -18,7 +18,15 @@ const deleteSetById = (id) => {
 
 const getSetsByProgramId = (program_id, day_of_week) => {
   const url = `
-    SELECT sets.exercise_name AS name, sessions.day_of_week AS day_of_week, sets.resistant AS resistant, sets.reps AS reps FROM sets
+    SELECT sets.exercise_name AS name, 
+          sessions.day_of_week AS day_of_week, 
+          sessions.id AS session_id,
+          programs.id AS program_id, 
+          programs.user_id AS user_id, 
+          sets.muscle_group AS muscle_group,
+          sets.resistant AS resistant, 
+          sets.reps AS reps 
+    FROM sets
     JOIN sessions ON sets.session_id = sessions.id
     JOIN programs ON programs.id = sessions.program_id
     WHERE programs.id = $1 AND sessions.day_of_week = $2;
