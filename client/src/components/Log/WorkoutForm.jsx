@@ -65,7 +65,7 @@ const WorkoutForm = () => {
   }, [selectedExercise]);
 
   return (
-    <div className="addlog text-white bg-dark-50 p-5 rounded border border-white border-3">
+    <div className="addlog text-white bg-dark p-5 rounded">
       <h3 className="text-warning fw-bold">Log Workout</h3>
       <div>
         {/* Exercise Details Section */}
