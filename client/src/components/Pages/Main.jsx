@@ -51,7 +51,7 @@ const Main = () => {
 
           {/* Program Schedule Section USE SLIDER OR CAROUSEL*/}
           {/* delete slider-container */}
-          <div className="bg-dark p-5">
+          <div className="bg-dark-75 p-5">
             <h1 className="display-5 fw-bold text-warning mb-2">
               Program Schedule
             </h1>
