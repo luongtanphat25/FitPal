@@ -1,6 +1,5 @@
-import {createContext, useState, useEffect, useContext} from 'react';
-import {userContext} from "./UserContext";
-import axios from 'axios';
+import { createContext } from 'react';
+
 // Create a Context
 export const setContext = createContext();
 
@@ -9,7 +8,7 @@ export default function SetProvider(props) {
   // Here is our Shared State Object
 
   // This list can get long with a lot of functions.  Reducer may be a better choice
-  const providerData = { };
+  const providerData = {};
 
   // We can now use this as a component to wrap anything
   // that needs our state
@@ -18,4 +17,4 @@ export default function SetProvider(props) {
       {props.children}
     </setContext.Provider>
   );
-};
+}

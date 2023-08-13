@@ -1,4 +1,5 @@
-import { createContext, useState, useEffect } from "react";
+/* eslint-disable no-unused-vars */
+import { createContext, useState } from "react";
 // Create a Context
 export const userContext = createContext();
 

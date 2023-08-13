@@ -4,7 +4,7 @@ import { WorkoutProvider } from '../../contexts/WorkoutContext.js';
 
 const LogPage = () => {
   return (
-    <div className='bg-dark-50' style={{minHeight: '100vh'}}>
+    <div className='bg-dark border-top border-secondary' style={{minHeight: '100vh'}}>
       <WorkoutProvider>
         <Log/>
       </WorkoutProvider>

@@ -41,9 +41,6 @@ const Main = () => {
           </div>
           {/* Log Section */}
           <div id="log" className="log-container bg-dark">
-          <h3 className="display-5 m-0  fw-bold text-warning opacity-75 pt-4"> 
-              Workout
-            </h3>  
             <Log />
           </div>
           {/* Program Schedule Section USE SLIDER OR CAROUSEL*/}

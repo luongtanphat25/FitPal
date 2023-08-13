@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import { useContext, useState, useEffect } from 'react';
 
@@ -24,7 +25,6 @@ function ProgramsPage(props) {
   }, []);
 
   const {
-    allPrograms,
     allSearchablePrograms,
     userPrograms,
     nonUserPrograms,

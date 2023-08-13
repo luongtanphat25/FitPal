@@ -40,8 +40,8 @@ const WorkoutForm = () => {
   }, [selectedMuscleGroup, selectedExercise]);
 
   return (
-    <div className="addlog text-white bg-dark-50 p-5 rounded">
-      <h3 className="text-warning fw-bold opacity-75 pb-3 pt-3 ">
+    <div className="addlog text-white bg-dark-50 p-5 rounded pt-3">
+      <h3 className="text-warning fw-bold opacity-75 pb-3 m-0">
         Log Workout
       </h3>
       <div>

@@ -148,8 +148,8 @@ const WorkoutHistory = () => {
 }, [allWorkoutHistory]);
 
   return (
-    <div className="workout-history-slider container addlog text-white p-5">
-      <h3 className="text-warning fw-bold pb-3 pt-3 opacity-75">
+    <div className="workout-history-slider container addlog text-white p-5 pt-3">
+      <h3 className="text-warning fw-bold pb-3 m-0 opacity-75">
         Daily Workout History
       </h3>
 
