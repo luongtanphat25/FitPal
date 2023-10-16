@@ -79,8 +79,6 @@ const AddExerciseModal = (props) => {
     setSets(updatedSets);
   };
 
-  
-
   return (
     <div>
       {/* Modal background and foreground elements */}
